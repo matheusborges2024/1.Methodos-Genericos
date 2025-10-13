@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Documentação - Classe SENDMAIL</title>
+    <style>
+        :root {
+            --bg-color: #ffffff;
+            --primary-color: #2c3e50;
+            --secondary-color: #34495e;
+            --accent-color: #1abc9c;
+            --accent-light-color: #e8f8f5;
+            --text-color: #555;
+            --border-color: #dee2e6;
+            --code-bg-color: #f8f9fa;
+            --menu-bg-color: #f2f5f8;
+        }
+
+        body {
+            font-family: 'Inter', Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            display: flex;
+        }
+
+        #menu-lateral {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 260px;
+            height: 100%;
+            background-color: var(--menu-bg-color);
+            border-right: 1px solid var(--border-color);
+            padding: 40px 20px;
+            overflow-y: auto;
+        }
+
+        #menu-lateral h2 {
+            font-size: 1.5em;
+            color: var(--primary-color);
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        #menu-lateral ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        #menu-lateral ul li a {
+            display: block;
+            padding: 12px 15px;
+            color: var(--secondary-color);
+            text-decoration: none;
+            border-radius: 8px;
+            margin-bottom: 5px;
+            transition: background-color 0.3s, color 0.3s;
+            font-weight: 500;
+        }
+
+        #menu-lateral ul li a:hover,
+        #menu-lateral ul li a.active {
+            background-color: var(--accent-light-color);
+            color: var(--accent-color);
+        }
+
+        main {
+            margin-left: 260px;
+            padding: 40px;
+            width: calc(100% - 260px);
+        }
+
+        section {
+            margin-bottom: 50px;
+            padding-top: 20px;
+        }
+
+        h1, h2, h3 {
+            color: var(--primary-color);
+        }
+
+        h1 {
+            font-size: 2.5em;
+            border-bottom: 2px solid var(--accent-color);
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+
+        h2 {
+            font-size: 2em;
+            margin-top: 40px;
+        }
+
+        h3 {
+            font-size: 1.5em;
+            margin-top: 30px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .icon {
+            font-size: 1.2em;
+        }
+
+        .method-card {
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            margin-bottom: 30px;
+            overflow: hidden;
+            background-color: #fff;
+        }
+
+        .method-header {
+            background-color: var(--menu-bg-color);
+            padding: 15px 20px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .method-header h3 {
+            margin: 0;
+            color: var(--secondary-color);
+        }
+
+        .method-body {
+            padding: 20px;
+        }
+
+        .method-body h4 {
+            color: var(--primary-color);
+            font-size: 1.2em;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+        
+        .method-body p, .method-body ul {
+            margin-bottom: 15px;
+        }
+
+        code {
+            font-family: 'Courier New', Courier, monospace;
+            background-color: var(--code-bg-color);
+            padding: 2px 6px;
+            border-radius: 4px;
+            border: 1px solid var(--border-color);
+        }
+
+        pre {
+            background-color: var(--code-bg-color);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 20px;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            font-size: 0.9em;
+        }
+        
+        .syntax-highlight .keyword { color: #0077aa; font-weight: bold; }
+        .syntax-highlight .comment { color: #aaaaaa; font-style: italic; }
+        .syntax-highlight .string { color: #a31515; }
+        .syntax-highlight .class-name { color: #267f99; }
+        .syntax-highlight .method-name { color: #795e26; }
+        .syntax-highlight .variable { color: #001080; }
+        .syntax-highlight .operator { color: #333; }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            padding: 12px 15px;
+            border: 1px solid var(--border-color);
+            text-align: left;
+        }
+
+        th {
+            background-color: var(--menu-bg-color);
+            color: var(--primary-color);
+        }
+    </style>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const sections = document.querySelectorAll('section');
+            const navLinks = document.querySelectorAll('#menu-lateral nav ul li a');
+
+            const onScroll = () => {
+                let currentSection = '';
+                sections.forEach(section => {
+                    const sectionTop = section.offsetTop;
+                    if (pageYOffset >= sectionTop - 60) {
+                        currentSection = section.getAttribute('id');
+                    }
+                });
+
+                navLinks.forEach(link => {
+                    link.classList.remove('active');
+                    if (link.getAttribute('href').substring(1) === currentSection) {
+                        link.classList.add('active');
+                    }
+                });
+            };
+
+            window.addEventListener('scroll', onScroll);
+        });
+    </script>
+</head>
+<body>
+    <aside id="menu-lateral">
+        <h2>SENDMAIL</h2>
+        <nav>
+            <ul>
+                <li><a href="#resumo-geral">Resumo Geral</a></li>
+                <li><a href="#classe-metodos">Classe e Métodos</a></li>
+                <li><a href="#fluxo-execucao">Fluxo de Execução</a></li>
+                <li><a href="#exemplo-uso">Exemplo de Uso</a></li>
+                <li><a href="#dependencias">Dependências</a></li>
+                <li><a href="#configuracoes-sx6">Configurações (SX6)</a></li>
+            </ul>
+        </nav>
+    </aside>
+    <main>
+        <section id="resumo-geral">
+            <h1><span class="icon">🧩</span> Documentação da Classe SENDMAIL</h1>
+            <p>A classe <code>SENDMAIL</code> é uma implementação em ADVPL para o Protheus/TOTVS, projetada para simplificar o processo de construção e envio de e-mails em formato HTML. Ela encapsula a complexidade da comunicação com servidores SMTP, gerenciamento de anexos e formatação de e-mails, oferecendo uma interface de alto nível para o desenvolvedor.</p>
+            <p>Principais funcionalidades:</p>
+            <ul>
+                <li>Construção de e-mails com corpo em HTML.</li>
+                <li>Conexão segura com servidores SMTP usando SSL/TLS.</li>
+                <li>Autenticação de usuário e senha.</li>
+                <li>Adição de múltiplos anexos aos e-mails.</li>
+                <li>Criação e gerenciamento de parâmetros de configuração no dicionário SX6.</li>
+                <li>Geração de logs de envio (sucesso e falha).</li>
+            </ul>
+        </section>
+
+        <section id="classe-metodos">
+            <h1><span class="icon">⚙️</span> Classe e Métodos</h1>
+            <p>A classe <code>SENDMAIL</code> é composta por uma série de métodos que controlam desde a inicialização do objeto até o envio final do e-mail.</p>
+
+            <div class="method-card">
+                <div class="method-header"><h3><span class="icon">✉️</span> New()</h3></div>
+                <div class="method-body">
+                    <h4>Descrição</h4>
+                    <p>Método construtor da classe. Inicializa as propriedades principais, configura o sistema de log e prepara o template HTML base para o e-mail.</p>
+                    <h4>Parâmetros de Entrada</h4>
+                    <ul>
+                        <li><code>cMailEnv</code> (Character): O endereço de e-mail do destinatário.</li>
+                        <li><code>cAssunto</code> (Character): O assunto do e-mail.</li>
+                    </ul>
+                    <h4>Valor de Retorno</h4>
+                    <p>Retorna o próprio objeto (<code>Self</code>) instanciado.</p>
+                    <h4>Exemplo de Uso</h4>
+                    <pre><code class="syntax-highlight"><span class="keyword">Local</span> <span class="variable">oEmail</span> <span class="operator">:=</span> <span class="class-name">SENDMAIL</span><span class="operator">:</span><span class="method-name">New</span><span class="operator">(</span><span class="string">'destinatario@exemplo.com'</span><span class="operator">,</span> <span class="string">'Assunto do E-mail'</span><span class="operator">)</span></code></pre>
+                </div>
+            </div>
+
+            <div class="method-card">
+                <div class="method-header"><h3><span class="icon">✉️</span> Send()</h3></div>
+                <div class="method-body">
+                    <h4>Descrição</h4>
+                    <p>Responsável por montar a mensagem, anexar arquivos e efetuar o envio do e-mail através do servidor SMTP configurado.</p>
+                    <h4>Parâmetros de Entrada</h4>
+                    <ul>
+                        <li><code>cHtml</code> (Character): O conteúdo HTML final do corpo do e-mail.</li>
+                        <li><code>aArq</code> (Array): Um array contendo o caminho completo dos arquivos a serem anexados. Parâmetro opcional.</li>
+                    </ul>
+                    <h4>Valor de Retorno</h4>
+                    <p><code>.T.</code> (True) se o e-mail for enviado com sucesso, ou <code>.F.</code> (False) em caso de falha.</p>
+                    <h4>Exemplo de Uso</h4>
+                    <pre><code class="syntax-highlight"><span class="keyword">Local</span> <span class="variable">lSuccess</span> <span class="operator">:=</span> <span class="variable">oEmail</span><span class="operator">:</span><span class="method-name">Send</span><span class="operator">(</span><span class="variable">cBody</span><span class="operator">,</span> <span class="operator">{</span><span class="string">'C:\temp\relatorio.pdf'</span><span class="operator">}</span><span class="operator">)</span></code></pre>
+                </div>
+            </div>
+
+            <div class="method-card">
+                <div class="method-header"><h3><span class="icon">⚙️</span> ConnectionBuild()</h3></div>
+                <div class="method-body">
+                    <h4>Descrição</h4>
+                    <p>Estabelece a conexão e autenticação com o servidor SMTP, utilizando os parâmetros definidos no SX6 (<code>XX_SMTP</code>, <code>XX_MAIL</code>, etc.).</p>
+                    <h4>Parâmetros de Entrada</h4>
+                    <p>Nenhum.</p>
+                    <h4>Valor de Retorno</h4>
+                    <p><code>.T.</code> (True) se a conexão e autenticação forem bem-sucedidas, ou <code>.F.</code> (False) caso contrário.</p>
+                    <h4>Exemplo de Uso</h4>
+                    <pre><code class="syntax-highlight"><span class="keyword">If</span> <span class="variable">oEmail</span><span class="operator">:</span><span class="method-name">ConnectionBuild</span><span class="operator">(</span><span class="operator">)</span>
+    <span class="comment">// Conexão estabelecida</span>
+<span class="keyword">EndIf</span></code></pre>
+                </div>
+            </div>
+
+            <div class="method-card">
+                <div class="method-header"><h3><span class="icon">⚙️</span> CloseConnection()</h3></div>
+                <div class="method-body">
+                    <h4>Descrição</h4>
+                    <p>Encerra a conexão com o servidor SMTP.</p>
+                    <h4>Parâmetros de Entrada</h4>
+                    <p>Nenhum.</p>
+                    <h4>Valor de Retorno</h4>
+                    <p>Nenhum.</p>
+                    <h4>Exemplo de Uso</h4>
+                    <pre><code class="syntax-highlight"><span class="variable">oEmail</span><span class="operator">:</span><span class="method-name">CloseConnection</span><span class="operator">(</span><span class="operator">)</span></code></pre>
+                </div>
+            </div>
+
+        </section>
+        
+        <section id="fluxo-execucao">
+            <h1><span class="icon">▶️</span> Fluxo de Execução</h1>
+            <p>O processo de envio de um e-mail utilizando a classe <code>SENDMAIL</code> segue uma sequência lógica de passos:</p>
+            <ol>
+                <li><strong>Instanciação:</strong> Crie um objeto da classe <code>SENDMAIL</code>, fornecendo o e-mail do destinatário e o assunto.</li>
+                <li><strong>Conexão:</strong> Chame o método <code>ConnectionBuild()</code> para estabelecer a comunicação com o servidor SMTP.</li>
+                <li><strong>Construção do Corpo:</strong> Manipule a propriedade <code>Html</code> do objeto, substituindo os placeholders (ex: <code>{{titulo}}</code>, <code>{{mensagem}}</code>) pelo conteúdo desejado.</li>
+                <li><strong>Envio:</strong> Invoque o método <code>Send()</code>, passando o HTML finalizado e, opcionalmente, um array com os caminhos dos arquivos para anexo.</li>
+                <li><strong>Encerramento:</strong> Após o envio, chame o método <code>CloseConnection()</code> para fechar a conexão com o servidor.</li>
+            </ol>
+        </section>
+
+        <section id="exemplo-uso">
+            <h1><span class="icon">💡</span> Exemplo de Uso</h1>
+            <p>Abaixo está um exemplo completo de como utilizar a classe <code>SENDMAIL</code> para enviar um e-mail com anexos.</p>
+            <pre><code class="syntax-highlight"><span class="keyword">#Include</span> <span class="string">'protheus.ch'</span>
+<span class="keyword">User</span> <span class="keyword">Function</span> <span class="method-name">ExemploEnvio</span><span class="operator">(</span><span class="operator">)</span>
+    <span class="keyword">Local</span> <span class="variable">oEmail</span>
+    <span class="keyword">Local</span> <span class="variable">cDestinatario</span> <span class="operator">:=</span> <span class="string">'cliente@email.com'</span>
+    <span class="keyword">Local</span> <span class="variable">cAssunto</span>      <span class="operator">:=</span> <span class="string">'Fatura e Boleto - Pedido #12345'</span>
+    <span class="keyword">Local</span> <span class="variable">cConteudoHtml</span> <span class="operator">:=</span> <span class="string">''</span>
+    <span class="keyword">Local</span> <span class="variable">aAnexos</span>       <span class="operator">:=</span> <span class="operator">{</span><span class="string">'C:\temp\fatura.pdf'</span><span class="operator">,</span> <span class="string">'C:\temp\boleto.pdf'</span><span class="operator">}</span>
+
+    <span class="comment">// 1. Instancia o objeto</span>
+    <span class="variable">oEmail</span> <span class="operator">:=</span> <span class="class-name">SENDMAIL</span><span class="operator">:</span><span class="method-name">New</span><span class="operator">(</span><span class="variable">cDestinatario</span><span class="operator">,</span> <span class="variable">cAssunto</span><span class="operator">)</span>
+
+    <span class="comment">// 2. Tenta conectar ao servidor SMTP</span>
+    <span class="keyword">If</span> <span class="variable">oEmail</span><span class="operator">:</span><span class="method-name">ConnectionBuild</span><span class="operator">(</span><span class="operator">)</span>
+        
+        <span class="comment">// 3. Monta o corpo do e-mail substituindo os placeholders</span>
+        <span class="variable">cConteudoHtml</span> <span class="operator">:=</span> <span class="variable">oEmail</span><span class="operator">:</span><span class="variable">Html</span>
+        <span class="variable">cConteudoHtml</span> <span class="operator">:=</span> <span class="method-name">StrTran</span><span class="operator">(</span><span class="variable">cConteudoHtml</span><span class="operator">,</span> <span class="string">'{{titulo}}'</span><span class="operator">,</span> <span class="string">'Documentos do seu Pedido'</span><span class="operator">)</span>
+        <span class="variable">cConteudoHtml</span> <span class="operator">:=</span> <span class="method-name">StrTran</span><span class="operator">(</span><span class="variable">cConteudoHtml</span><span class="operator">,</span> <span class="string">'{{resumo}}'</span><span class="operator">,</span> <span class="string">'Olá! Seguem em anexo a fatura e o boleto referentes ao seu pedido.'</span><span class="operator">)</span>
+        <span class="variable">cConteudoHtml</span> <span class="operator">:=</span> <span class="method-name">StrTran</span><span class="operator">(</span><span class="variable">cConteudoHtml</span><span class="operator">,</span> <span class="string">'{{mensagem}}'</span><span class="operator">,</span> <span class="string">'Agradecemos pela sua preferência.'</span><span class="operator">)</span>
+        
+        <span class="comment">// 4. Envia o e-mail</span>
+        <span class="keyword">If</span> <span class="variable">oEmail</span><span class="operator">:</span><span class="method-name">Send</span><span class="operator">(</span><span class="variable">cConteudoHtml</span><span class="operator">,</span> <span class="variable">aAnexos</span><span class="operator">)</span>
+            <span class="method-name">ConOut</span><span class="operator">(</span><span class="string">'E-mail enviado com sucesso!'</span><span class="operator">)</span>
+        <span class="keyword">Else</span>
+            <span class="method-name">ConOut</span><span class="operator">(</span><span class="string">'Erro ao enviar e-mail: '</span> <span class="operator">+</span> <span class="variable">oEmail</span><span class="operator">:</span><span class="variable">cErro</span><span class="operator">)</span>
+        <span class="keyword">EndIf</span>
+        
+        <span class="comment">// 5. Fecha a conexão</span>
+        <span class="variable">oEmail</span><span class="operator">:</span><span class="method-name">CloseConnection</span><span class="operator">(</span><span class="operator">)</span>
+    <span class="keyword">Else</span>
+        <span class="method-name">ConOut</span><span class="operator">(</span><span class="string">'Falha ao conectar no servidor SMTP: '</span> <span class="operator">+</span> <span class="variable">oEmail</span><span class="operator">:</span><span class="variable">cErro</span><span class="operator">)</span>
+    <span class="keyword">EndIf</span>
+<span class="keyword">Return</span></code></pre>
+        </section>
+        
+        <section id="dependencias">
+            <h1><span class="icon">🔗</span> Dependências</h1>
+            <p>Para o correto funcionamento da classe, é necessário incluir os seguintes arquivos de cabeçalho (includes) no seu fonte:</p>
+            <ul>
+                <li><code>protheus.ch</code></li>
+                <li><code>totvs.ch</code></li>
+                <li><code>topconn.ch</code></li>
+                <li><code>tbiconn.ch</code></li>
+            </ul>
+        </section>
+
+        <section id="configuracoes-sx6">
+            <h1><span class="icon">🔧</span> Configurações (SX6)</h1>
+            <p>A classe utiliza o método <code>XPUTSX6()</code> para criar e gerenciar automaticamente os parâmetros de configuração do Protheus (tabela SX6). É fundamental que esses parâmetros sejam preenchidos corretamente no ambiente para que o envio de e-mails funcione.</p>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Parâmetro</th>
+                        <th>Tipo</th>
+                        <th>Descrição</th>
+                        <th>Exemplo</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>XX_MAIL</code></td>
+                        <td>Caractere</td>
+                        <td>E-mail de envio que será usado para autenticação e como remetente.</td>
+                        <td><code>nao-responda@suaempresa.com.br</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>XX_PASS</code></td>
+                        <td>Caractere</td>
+                        <td>Senha do e-mail de envio.</td>
+                        <td><code>********</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>XX_SMTP</code></td>
+                        <td>Caractere</td>
+                        <td>Endereço do servidor SMTP.</td>
+                        <td><code>smtp.office365.com</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>XX_ACCONT</code></td>
+                        <td>Caractere</td>
+                        <td>Conta de usuário no servidor (geralmente o mesmo que XX_MAIL).</td>
+                        <td><code>nao-responda@suaempresa.com.br</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>XX_SSL</code></td>
+                        <td>Lógico</td>
+                        <td>Define se a conexão deve usar SSL. Preencha com <code>.T.</code> ou <code>.F.</code>.</td>
+                        <td><code>.T.</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>XX_TSL</code></td>
+                        <td>Lógico</td>
+                        <td>Define se a conexão deve usar TLS. Preencha com <code>.T.</code> ou <code>.F.</code>.</td>
+                        <td><code>.T.</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>XX_GERALOG</code></td>
+                        <td>Lógico</td>
+                        <td>Habilita ou desabilita a geração de log de envio. Preencha com <code>.T.</code> ou <code>.F.</code>.</td>
+                        <td><code>.T.</code></td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+    </main>
+</body>
+</html>
