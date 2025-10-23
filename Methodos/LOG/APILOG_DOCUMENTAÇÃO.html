@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Documentação - Classe LOGAPI</title>
+    <style>
+        :root {
+            --bg-color: #ffffff;
+            --primary-color: #2c3e50;
+            --secondary-color: #34495e;
+            --accent-color: #3498db; /* Azul para diferenciar da outra documentação */
+            --accent-light-color: #ecf5fb;
+            --text-color: #555;
+            --border-color: #dee2e6;
+            --code-bg-color: #f8f9fa;
+            --menu-bg-color: #f2f5f8;
+        }
+
+        body {
+            font-family: 'Inter', Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            display: flex;
+        }
+
+        #menu-lateral {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 260px;
+            height: 100%;
+            background-color: var(--menu-bg-color);
+            border-right: 1px solid var(--border-color);
+            padding: 40px 20px;
+            overflow-y: auto;
+        }
+
+        #menu-lateral h2 {
+            font-size: 1.5em;
+            color: var(--primary-color);
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        #menu-lateral ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        #menu-lateral ul li a {
+            display: block;
+            padding: 12px 15px;
+            color: var(--secondary-color);
+            text-decoration: none;
+            border-radius: 8px;
+            margin-bottom: 5px;
+            transition: background-color 0.3s, color 0.3s;
+            font-weight: 500;
+        }
+
+        #menu-lateral ul li a:hover,
+        #menu-lateral ul li a.active {
+            background-color: var(--accent-light-color);
+            color: var(--accent-color);
+        }
+
+        main {
+            margin-left: 260px;
+            padding: 40px;
+            width: calc(100% - 260px);
+        }
+
+        section {
+            margin-bottom: 50px;
+            padding-top: 20px;
+        }
+
+        h1, h2, h3 {
+            color: var(--primary-color);
+        }
+
+        h1 {
+            font-size: 2.5em;
+            border-bottom: 2px solid var(--accent-color);
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        h2 {
+            font-size: 2em;
+            margin-top: 40px;
+        }
+
+        h3 {
+            font-size: 1.5em;
+            margin-top: 30px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .icon {
+            font-size: 1.2em;
+        }
+
+        .method-card {
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            margin-bottom: 30px;
+            overflow: hidden;
+            background-color: #fff;
+        }
+
+        .method-header {
+            background-color: var(--menu-bg-color);
+            padding: 15px 20px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .method-header h3 {
+            margin: 0;
+            color: var(--secondary-color);
+        }
+
+        .method-body {
+            padding: 20px;
+        }
+
+        .method-body h4 {
+            color: var(--primary-color);
+            font-size: 1.2em;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+        
+        .method-body p, .method-body ul {
+            margin-bottom: 15px;
+        }
+
+        code {
+            font-family: 'Courier New', Courier, monospace;
+            background-color: var(--code-bg-color);
+            padding: 2px 6px;
+            border-radius: 4px;
+            border: 1px solid var(--border-color);
+        }
+
+        pre {
+            background-color: var(--code-bg-color);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 20px;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            font-size: 0.9em;
+        }
+        
+        .syntax-highlight .keyword { color: #0077aa; font-weight: bold; }
+        .syntax-highlight .comment { color: #aaaaaa; font-style: italic; }
+        .syntax-highlight .string { color: #a31515; }
+        .syntax-highlight .class-name { color: #267f99; }
+        .syntax-highlight .method-name { color: #795e26; }
+        .syntax-highlight .variable { color: #001080; }
+        .syntax-highlight .operator { color: #333; }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            padding: 12px 15px;
+            border: 1px solid var(--border-color);
+            text-align: left;
+        }
+
+        th {
+            background-color: var(--menu-bg-color);
+            color: var(--primary-color);
+        }
+    </style>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const sections = document.querySelectorAll('section');
+            const navLinks = document.querySelectorAll('#menu-lateral nav ul li a');
+
+            const onScroll = () => {
+                let currentSection = '';
+                sections.forEach(section => {
+                    const sectionTop = section.offsetTop;
+                    if (pageYOffset >= sectionTop - 60) {
+                        currentSection = section.getAttribute('id');
+                    }
+                });
+
+                navLinks.forEach(link => {
+                    link.classList.remove('active');
+                    if (link.getAttribute('href').substring(1) === currentSection) {
+                        link.classList.add('active');
+                    }
+                });
+            };
+
+            window.addEventListener('scroll', onScroll);
+        });
+    </script>
+</head>
+<body>
+    <aside id="menu-lateral">
+        <h2>LOGAPI</h2>
+        <nav>
+            <ul>
+                <li><a href="#resumo-geral">Resumo Geral</a></li>
+                <li><a href="#classe-metodos">Classe e Métodos</a></li>
+                <li><a href="#tabela-estrutura">Estrutura da Tabela</a></li>
+                <li><a href="#tabela-indices">Índices da Tabela</a></li>
+                <li><a href="#fluxo-execucao">Fluxo de Execução</a></li>
+                <li><a href="#exemplo-uso">Exemplo de Uso</a></li>
+                <li><a href="#dependencias">Dependências</a></li>
+            </ul>
+        </nav>
+    </aside>
+    <main>
+        <section id="resumo-geral">
+            <h1><span class="icon">🧩</span> Documentação da Classe LOGAPI</h1>
+            <p>A classe <code>LOGAPI</code> é uma ferramenta robusta para o Protheus/TOTVS, desenvolvida para criar e gerenciar registros de log de integrações via API. Seu principal objetivo é automatizar a persistência de dados de requisições e respostas em uma tabela SQL dedicada, chamada <code>API_LOG</code>.</p>
+            <p>Principais funcionalidades:</p>
+            <ul>
+                <li><strong>Criação Automática de Tabela:</strong> Verifica a existência da tabela <code>API_LOG</code> e a cria, junto com seus índices, caso não exista.</li>
+                <li><strong>Compatibilidade Multi-banco:</strong> O script de verificação da tabela é compatível com MSSQL, Oracle, PostgreSQL e MySQL.</li>
+                <li><strong>Método Simplificado de Inserção:</strong> Oferece um método único, <code>SEND</code>, para gravar todas as informações relevantes de uma transação de API.</li>
+                <li><strong>Validação de Dados:</strong> Garante que os campos essenciais para o log sejam preenchidos antes de tentar a inserção no banco de dados.</li>
+            </ul>
+        </section>
+
+        <section id="classe-metodos">
+            <h1><span class="icon">⚙️</span> Classe e Métodos</h1>
+            <p>A classe é composta por métodos que gerenciam a estrutura do banco de dados e a inserção dos dados de log.</p>
+
+            <div class="method-card">
+                <div class="method-header"><h3><span class="icon">🚀</span> New()</h3></div>
+                <div class="method-body">
+                    <h4>Descrição</h4>
+                    <p>Método construtor da classe. Ao ser instanciado, ele automaticamente chama o método <code>CreateTable()</code> para garantir que a infraestrutura de log (tabela e índices) esteja pronta para uso.</p>
+                    <h4>Parâmetros de Entrada</h4>
+                    <p>Nenhum.</p>
+                    <h4>Valor de Retorno</h4>
+                    <p>Retorna o próprio objeto (<code>Self</code>) instanciado.</p>
+                    <h4>Exemplo de Uso</h4>
+                    <pre><code class="syntax-highlight"><span class="keyword">Local</span> <span class="variable">oApiLog</span> <span class="operator">:=</span> <span class="class-name">LOGAPI</span><span class="operator">(</span><span class="operator">)</span><span class="operator">:</span><span class="method-name">New</span><span class="operator">(</span><span class="operator">)</span></code></pre>
+                </div>
+            </div>
+
+            <div class="method-card">
+                <div class="method-header"><h3><span class="icon">💾</span> SEND()</h3></div>
+                <div class="method-body">
+                    <h4>Descrição</h4>
+                    <p>Principal método da classe, responsável por inserir um novo registro de log na tabela <code>API_LOG</code>. Ele recebe todos os detalhes da requisição como parâmetros, valida os campos obrigatórios e executa o comando SQL <code>INSERT</code>.</p>
+                    <h4>Parâmetros de Entrada</h4>
+                    <ul>
+                        <li><code>PROGRAMA</code> (Character): Nome do programa ou rotina que originou a requisição.</li>
+                        <li><code>URL</code> (Character): A URL base da API que foi chamada.</li>
+                        <li><code>ENDPOINT</code> (Character): O endpoint específico que foi acessado.</li>
+                        <li><code>METODO</code> (Character): O método HTTP utilizado (ex: 'GET', 'POST', 'PUT').</li>
+                        <li><code>REQUEST_BODY</code> (Character): O corpo (payload) da requisição enviada.</li>
+                        <li><code>RESPONSE_BODY</code> (Character): O corpo (payload) da resposta recebida da API.</li>
+                        <li><code>STATUS_CODE</code> (Numeric): O código de status HTTP da resposta (ex: 200, 404, 500).</li>
+                        <li><code>TEMPO_RESPOSTA</code> (Numeric): O tempo de resposta da requisição, em milissegundos.</li>
+                        <li><code>USUARIO</code> (Character): O usuário do sistema que disparou a ação.</li>
+                        <li><code>AMBIENTE</code> (Character): O ambiente Protheus (Produção/Homologação).</li>
+                        <li><code>OBSERVACAO</code> (Character): Um campo livre para observações adicionais.</li>
+                    </ul>
+                    <h4>Valor de Retorno</h4>
+                    <p><code>.T.</code> (True) se o log for inserido com sucesso, ou <code>.F.</code> (False) em caso de falha de validação ou erro na execução do SQL.</p>
+                </div>
+            </div>
+            
+            <div class="method-card">
+                <div class="method-header"><h3><span class="icon">🛠️</span> CreateTable()</h3></div>
+                <div class="method-body">
+                    <h4>Descrição</h4>
+                    <p>Um método interno, chamado automaticamente pelo construtor. Ele verifica se a tabela <code>API_LOG</code> já existe no banco de dados. Se não existir, ele executa os scripts para criar a tabela e todos os seus índices de performance.</p>
+                    <h4>Parâmetros de Entrada</h4>
+                    <p>Nenhum.</p>
+                    <h4>Valor de Retorno</h4>
+                    <p>Nenhum.</p>
+                </div>
+            </div>
+
+        </section>
+        
+        <section id="tabela-estrutura">
+            <h1><span class="icon">📋</span> Estrutura da Tabela (API_LOG)</h1>
+            <p>A classe gerencia a tabela <code>API_LOG</code>, que possui a seguinte estrutura (exemplo para MSSQL):</p>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Nome da Coluna</th>
+                        <th>Tipo de Dado</th>
+                        <th>Nulo?</th>
+                        <th>Descrição</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>ID_LOG</code></td>
+                        <td>BIGINT IDENTITY(1,1)</td>
+                        <td>Não</td>
+                        <td>Chave primária autoincremental.</td>
+                    </tr>
+                    <tr>
+                        <td><code>PROGRAMA</code></td>
+                        <td>NVARCHAR(255)</td>
+                        <td>Não</td>
+                        <td>Nome da rotina Protheus que fez a chamada.</td>
+                    </tr>
+                    <tr>
+                        <td><code>DATA_LOG</code></td>
+                        <td>DATETIMEOFFSET</td>
+                        <td>Não</td>
+                        <td>Data e hora exatas em que o log foi gerado.</td>
+                    </tr>
+                    <tr>
+                        <td><code>ORIGEM</code></td>
+                        <td>NVARCHAR(255)</td>
+                        <td>Não</td>
+                        <td>URL base do serviço de API.</td>
+                    </tr>
+                    <tr>
+                        <td><code>ENDPOINT</code></td>
+                        <td>NVARCHAR(2048)</td>
+                        <td>Não</td>
+                        <td>Endpoint específico da API que foi consumido.</td>
+                    </tr>
+                    <tr>
+                        <td><code>METODO</code></td>
+                        <td>NVARCHAR(10)</td>
+                        <td>Não</td>
+                        <td>Método HTTP (GET, POST, etc.).</td>
+                    </tr>
+                    <tr>
+                        <td><code>REQUEST_BODY</code></td>
+                        <td>NVARCHAR(MAX)</td>
+                        <td>Sim</td>
+                        <td>Conteúdo JSON/XML enviado na requisição.</td>
+                    </tr>
+                    <tr>
+                        <td><code>RESPONSE_BODY</code></td>
+                        <td>NVARCHAR(MAX)</td>
+                        <td>Sim</td>
+                        <td>Conteúdo JSON/XML recebido na resposta.</td>
+                    </tr>
+                    <tr>
+                        <td><code>STATUS_CODE</code></td>
+                        <td>SMALLINT</td>
+                        <td>Sim</td>
+                        <td>Código de status da resposta HTTP.</td>
+                    </tr>
+                    <tr>
+                        <td><code>TEMPO_RESPOSTA</code></td>
+                        <td>INT</td>
+                        <td>Sim</td>
+                        <td>Tempo de resposta em milissegundos.</td>
+                    </tr>
+                    <tr>
+                        <td><code>USUARIO</code></td>
+                        <td>NVARCHAR(255)</td>
+                        <td>Sim</td>
+                        <td>Usuário logado no sistema Protheus.</td>
+                    </tr>
+                    <tr>
+                        <td><code>AMBIENTE</code></td>
+                        <td>NVARCHAR(50)</td>
+                        <td>Não</td>
+                        <td>Ambiente de execução (ex: PRODUCAO).</td>
+                    </tr>
+                    <tr>
+                        <td><code>OBSERVACAO</code></td>
+                        <td>NVARCHAR(MAX)</td>
+                        <td>Sim</td>
+                        <td>Qualquer informação adicional relevante.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section id="tabela-indices">
+            <h1><span class="icon">⚡</span> Índices da Tabela</h1>
+            <p>Para otimizar consultas, os seguintes índices são criados automaticamente na tabela <code>API_LOG</code>:</p>
+            <ul>
+                <li><code>idx_apilog_data</code>: Acelera a busca e ordenação por data.</li>
+                <li><code>idx_apilog_endpoint</code>: Otimiza filtros por endpoint.</li>
+                <li><code>idx_apilog_status_code</code>: Melhora a performance de buscas por status code.</li>
+                <li><code>idx_apilog_id_endpoint</code>: Índice composto para consultas que filtram por ID e endpoint.</li>
+                <li><code>idx_apilog_id_data</code>: Índice composto para consultas que filtram por ID e data.</li>
+                <li><code>idx_apilog_id_status</code>: Índice composto para consultas que filtram por ID e status.</li>
+            </ul>
+        </section>
+        
+        <section id="fluxo-execucao">
+            <h1><span class="icon">▶️</span> Fluxo de Execução</h1>
+            <p>O uso da classe é direto e simplificado:</p>
+            <ol>
+                <li><strong>Instanciação:</strong> Crie um objeto da classe <code>LOGAPI</code>. Neste momento, a existência da tabela de log é verificada e, se necessário, criada.</li>
+                <li><strong>Coleta de Dados:</strong> Após realizar uma chamada de API, colete todas as informações relevantes (URL, bodies, status, etc.).</li>
+                <li><strong>Gravação do Log:</strong> Chame o método <code>SEND()</code>, passando todas as informações coletadas como parâmetros.</li>
+                <li><strong>Verificação:</strong> Verifique o retorno do método <code>SEND()</code> para tratar possíveis falhas na gravação do log.</li>
+            </ol>
+        </section>
+
+        <section id="exemplo-uso">
+            <h1><span class="icon">💡</span> Exemplo de Uso</h1>
+            <p>Abaixo, um exemplo prático de como instanciar a classe e gravar um log após uma chamada de API.</p>
+            <pre><code class="syntax-highlight"><span class="keyword">#Include</span> <span class="string">'protheus.ch'</span>
+<span class="keyword">User</span> <span class="keyword">Function</span> <span class="method-name">ExemploLogAPI</span><span class="operator">(</span><span class="operator">)</span>
+    <span class="keyword">Local</span> <span class="variable">oApiLog</span>
+    <span class="keyword">Local</span> <span class="variable">cJsonReq</span> <span class="operator">:=</span> <span class="string">'{"id": 123, "value": "teste"}'</span>
+    <span class="keyword">Local</span> <span class="variable">cJsonRes</span> <span class="operator">:=</span> <span class="string">'{"status": "success", "data": "ok"}'</span>
+    <span class="keyword">Local</span> <span class="variable">lOk</span>
+
+    <span class="comment">// 1. Instancia o objeto (a tabela é verificada/criada aqui)</span>
+    <span class="variable">oApiLog</span> <span class="operator">:=</span> <span class="class-name">LOGAPI</span><span class="operator">(</span><span class="operator">)</span><span class="operator">:</span><span class="method-name">New</span><span class="operator">(</span><span class="operator">)</span>
+    
+    <span class="comment">// 2. Chama o método SEND com os dados da transação</span>
+    <span class="variable">lOk</span> <span class="operator">:=</span> <span class="variable">oApiLog</span><span class="operator">:</span><span class="method-name">SEND</span><span class="operator">(</span>;
+        <span class="string">"MATA410"</span><span class="operator">,</span>                                   <span class="comment">// PROGRAMA</span>
+        <span class="string">"https://api.example.com"</span><span class="operator">,</span>                   <span class="comment">// URL</span>
+        <span class="string">"/v1/orders"</span><span class="operator">,</span>                              <span class="comment">// ENDPOINT</span>
+        <span class="string">"POST"</span><span class="operator">,</span>                                    <span class="comment">// METODO</span>
+        <span class="variable">cJsonReq</span><span class="operator">,</span>                                  <span class="comment">// REQUEST_BODY</span>
+        <span class="variable">cJsonRes</span><span class="operator">,</span>                                  <span class="comment">// RESPONSE_BODY</span>
+        201<span class="operator">,</span>                                      <span class="comment">// STATUS_CODE</span>
+        1500<span class="operator">,</span>                                     <span class="comment">// TEMPO_RESPOSTA (ms)</span>
+        <span class="method-name">__USER__</span><span class="operator">,</span>                                  <span class="comment">// USUARIO</span>
+        <span class="string">"PRODUCAO"</span><span class="operator">,</span>                                <span class="comment">// AMBIENTE</span>
+        <span class="string">"Log de inclusão de pedido via API."</span>      <span class="comment">// OBSERVACAO</span>
+    <span class="operator">)</span>
+
+    <span class="comment">// 3. Verifica o resultado</span>
+    <span class="keyword">If</span> <span class="variable">lOk</span>
+        <span class="method-name">ConOut</span><span class="operator">(</span><span class="string">'Log da API gravado com sucesso!'</span><span class="operator">)</span>
+    <span class="keyword">Else</span>
+        <span class="method-name">ConOut</span><span class="operator">(</span><span class="string">'Falha ao gravar o log da API.'</span><span class="operator">)</span>
+    <span class="keyword">EndIf</span>
+<span class="keyword">Return</span></code></pre>
+        </section>
+        
+        <section id="dependencias">
+            <h1><span class="icon">🔗</span> Dependências</h1>
+            <p>Para o correto funcionamento da classe, é necessário incluir os seguintes arquivos de cabeçalho (includes) no seu fonte:</p>
+            <ul>
+                <li><code>protheus.ch</code></li>
+                <li><code>totvs.ch</code></li>
+                <li><code>topconn.ch</code></li>
+                <li><code>tbiconn.ch</code></li>
+            </ul>
+        </section>
+    </main>
+</body>
+</html>
