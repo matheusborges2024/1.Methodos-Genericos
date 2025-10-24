@@ -267,6 +267,7 @@
                     <p>Principal método da classe, responsável por inserir um novo registro de log na tabela <code>API_LOG</code>. Ele recebe todos os detalhes da requisição como parâmetros, valida os campos obrigatórios e executa o comando SQL <code>INSERT</code>.</p>
                     <h4>Parâmetros de Entrada</h4>
                     <ul>
+						<li><code>DIRECAO</code> (Character): Direção da API, Se é entrada ou Saida (ex: 'INBOUND','OUTBOUND').</li>
                         <li><code>PROGRAMA</code> (Character): Nome do programa ou rotina que originou a requisição.</li>
                         <li><code>URL</code> (Character): A URL base da API que foi chamada.</li>
                         <li><code>ENDPOINT</code> (Character): O endpoint específico que foi acessado.</li>
@@ -316,6 +317,12 @@
                         <td>BIGINT IDENTITY(1,1)</td>
                         <td>Não</td>
                         <td>Chave primária autoincremental.</td>
+                    </tr>
+					<tr>
+                        <td><code>DIRECAO</code></td>
+                        <td>NVARCHAR(10)</td>
+                        <td>Não</td>
+                        <td>Direcao da API</td>
                     </tr>
                     <tr>
                         <td><code>PROGRAMA</code></td>
@@ -403,6 +410,7 @@
                 <li><code>idx_apilog_id_endpoint</code>: Índice composto para consultas que filtram por ID e endpoint.</li>
                 <li><code>idx_apilog_id_data</code>: Índice composto para consultas que filtram por ID e data.</li>
                 <li><code>idx_apilog_id_status</code>: Índice composto para consultas que filtram por ID e status.</li>
+				<li><code>idx_apilog_direcao</code>: Índice composto para consultas que filtram por DIRECAO.</li>
             </ul>
         </section>
         
@@ -432,7 +440,8 @@
     
     <span class="comment">// 2. Chama o método SEND com os dados da transação</span>
     <span class="variable">lOk</span> <span class="operator">:=</span> <span class="variable">oApiLog</span><span class="operator">:</span><span class="method-name">SEND</span><span class="operator">(</span>;
-        <span class="string">"MATA410"</span><span class="operator">,</span>                                   <span class="comment">// PROGRAMA</span>
+        <span class="string">"INBOUND"</span><span class="operator">,</span>                                   <span class="comment">// DIRECAO</span>
+		<span class="string">"MATA410"</span><span class="operator">,</span>                                   <span class="comment">// PROGRAMA</span>
         <span class="string">"https://api.example.com"</span><span class="operator">,</span>                   <span class="comment">// URL</span>
         <span class="string">"/v1/orders"</span><span class="operator">,</span>                              <span class="comment">// ENDPOINT</span>
         <span class="string">"POST"</span><span class="operator">,</span>                                    <span class="comment">// METODO</span>
